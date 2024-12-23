@@ -1,3 +1,43 @@
+# Project Title: Event Management API
+
+## Description:
+This API is designed to manage events, allowing users to create, update, and delete events. Additionally, it provides the functionality to view upcoming events. The project leverages Django ORM for database interactions and is deployed on Heroku or PythonAnywhere.
+
+## Core Features and Functionality:
+User Management:
+User registration and authentication.
+CRUD operations for user profiles.
+Event Management:
+Create, read, update, and delete events.
+View details of individual events.
+Upcoming Events:
+Endpoint to fetch all upcoming events based on the current date.
+
+## API Endpoints to Implement:
+### User Endpoints:
+`POST /api/users/`: Create a new user.
+`GET /api/users/<id>/`: Retrieve a specific user.
+`PUT /api/users/<id>/`: Update a specific user.
+`DELETE /api/users/<id>/`: Delete a specific user.
+### Event Endpoints:
+`POST /api/events/`: Create a new event.
+`GET /api/events/`: Retrieve all events.
+`GET /api/events/<id>/`: Retrieve a specific event.
+`PUT /api/events/<id>/`: Update a specific event.
+`DELETE /api/events/<id>/`: Delete a specific event. 
+### Upcoming Events Endpoint:
+`GET /api/events/upcoming/`: Retrieve all upcoming events.
+
+## Tools and Libraries:
+- Django: For building the web application.
+- Django REST Framework: For creating the API.
+- MySQL: As the database.
+- mysqlclient: To connect Django with MySQL.
+- Gunicorn: For serving the Django application on Heroku.
+- Heroku: For deployment.
+- Django ORM: For database interactions.
+
+
 # Event Management API
 
 ## Setup Instructions
