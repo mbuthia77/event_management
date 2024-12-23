@@ -36,9 +36,7 @@ This API is designed to manage events, allowing users to create, update, and del
 - Gunicorn: For serving the Django application on Heroku.
 - Heroku: For deployment.
 - Django ORM: For database interactions.
-
-
-# Event Management API
+- 
 
 ## Setup Instructions
 
