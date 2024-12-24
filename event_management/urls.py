@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
 from rest_framework.routers import DefaultRouter
 from events.views import EventViewSet, UserViewSet
 from rest_framework_simplejwt.views import (
@@ -27,11 +28,33 @@ router = DefaultRouter()
 router.register(r'events', EventViewSet)
 router.register(r'users', UserViewSet)
 
+# Define a simple view for the root URL 
+
+def home(request):
+    html_content = """
+    <html>
+    <body>
+        <h1>Welcome to the Event Management API</h1>
+        <ul>
+            <li><a href="/admin/">Admin</a></li>
+            <li><a href="/api/events/">Event List</a></li>
+            <li><a href="/api/users/">User List</a></li>
+            <li><a href="/api/token/">Login</a></li>
+            <li><a href="/api/token/refresh/">Refresh Token</a></li>
+        </ul>
+    </body>
+    </html>
+    """
+    return HttpResponse(html_content)
+
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', home), # Root URL
 ]
 

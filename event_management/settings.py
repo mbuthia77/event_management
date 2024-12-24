@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'events',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
 ]
 
@@ -109,12 +108,15 @@ AUTH_PASSWORD_VALIDATORS = [
 #Add authentication classes
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication', 
+        'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+AUTH_USER_MODEL = 'events.User'
 
 #Add pagination
 REST_FRAMEWORK['DEFAULT_PAGINATION_CLASS'] = 'rest_framework.pagination.PageNumberPagination'
@@ -122,16 +124,16 @@ REST_FRAMEWORK['PAGE_SIZE'] = 10
 
 
 #Add Simple JWT settings
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-}
+#SIMPLE_JWT = {
+#    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
+#    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#    'ROTATE_REFRESH_TOKENS': False,
+#   'BLACKLIST_AFTER_ROTATION': True,
+#    'ALGORITHM': 'HS256',
+#    'VERIFYING_KEY': None,
+#    'AUTH_HEADER_TYPES': ('Bearer',),
+#    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+#}
 
 
 # Internationalization
@@ -151,6 +153,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Collect static files into the STATIC_ROOT directory 
+# python manage.py collectstatic# Collect static files into the STATIC_ROOT directory python manage.py collectstatic
 
 
 # Default primary key field type
