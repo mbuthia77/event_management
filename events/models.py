@@ -12,6 +12,9 @@ class Event(models.Model):
     date = models.DateTimeField()
     location = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def is_full(self): 
+        return self.attendees.count() >= self.capacity
 
     def __str__(self):
         return self.title
