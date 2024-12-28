@@ -34,7 +34,7 @@ This API is designed to manage events, allowing users to create, update, and del
 - MySQL: As the database.
 - mysqlclient: To connect Django with MySQL.
 - Gunicorn: For serving the Django application on Heroku.
-- Heroku: For deployment.
+- PythonAnywhere For deployment.
 - Django ORM: For database interactions.
 - 
 
