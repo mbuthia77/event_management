@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .event-list li {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .event-list li strong {
+            font-size: 1.2em;
+            color: #0066cc;
+        }
+        .event-details {
+            margin-left: 20px;
+            color: #666;
+        }
+        .event-details p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event List</h1>
+    <p>This is a unique identifier to confirm the correct template is being loaded.</p>
+    <ul class="event-list">
+        {% for event in events %}
+            <li>
+                <strong>{{ event.title }}</strong><br>
+                <div class="event-details">
+                    <p>Category: {{ event.category.name }}</p>
+                    <p>Description: {{ event.description }}</p>
+                    <p>Date: {{ event.date_time|date:"M d, Y H:i" }}</p>
+                    <p>Location: {{ event.location }}</p>
+                    <p>Capacity: {{ event.capacity }}</p>
+                </div>
+            </li>
+        {% empty %}
+            <li>No events are currently available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

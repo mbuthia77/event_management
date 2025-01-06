@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Event</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .create-event-container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input, textarea, select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input.error, textarea.error, select.error {
+            border-color: red;
+        }
+        button {
+            padding: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="create-event-container">
+        <h1>Create Event</h1>
+        <form method="POST" id="createEventForm">
+            {% csrf_token %}
+            <div id="errorMessages" class="error-message">
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+            </div>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+            <label for="date_time">Date & Time:</label>
+            <input type="datetime-local" id="date_time" name="date_time" required>
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="capacity">Capacity:</label>
+            <input type="number" id="capacity" name="capacity" required>
+            <button type="submit">Create Event</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('createEventForm').addEventListener('submit', function(event) {
+            var isValid = true;
+            var errorMessages = [];
+
+            var title = document.getElementById('title');
+            var dateTime = document.getElementById('date_time');
+            var location = document.getElementById('location');
+            var capacity = document.getElementById('capacity');
+
+            // Clear previous error styles and messages
+            title.classList.remove('error');
+            dateTime.classList.remove('error');
+            location.classList.remove('error');
+            capacity.classList.remove('error');
+            document.getElementById('errorMessages').innerHTML = '';
+
+            // Validate Title
+            if (title.value.trim() === '') {
+                isValid = false;
+                title.classList.add('error');
+                errorMessages.push('Title is required.');
+            }
+
+            // Validate Date & Time
+            if (dateTime.value.trim() === '') {
+                isValid = false;
+                dateTime.classList.add('error');
+                errorMessages.push('Date & Time is required.');
+            } else {
+                // Check if the date is in the past
+                var inputDate = new Date(dateTime.value);
+                var now = new Date();
+                if (inputDate < now) {
+                    isValid = false;
+                    dateTime.classList.add('error');
+                    errorMessages.push('Cannot set an event date in the past.');
+                }
+            }
+
+            // Validate Location
+            if (location.value.trim() === '') {
+                isValid = false;
+                location.classList.add('error');
+                errorMessages.push('Location is required.');
+            }
+
+            // Validate Capacity
+            if (capacity.value.trim() === '' || isNaN(capacity.value) || capacity.value <= 0) {
+                isValid = false;
+                capacity.classList.add('error');
+                errorMessages.push('Valid Capacity is required.');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+                document.getElementById('errorMessages').innerHTML = errorMessages.join('<br>');
+            }
+        });
+    </script>
+</body>
+</html>

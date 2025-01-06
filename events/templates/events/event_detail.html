@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+        .event-container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .event-details {
+            margin-top: 20px;
+        }
+        .event-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="event-container">
+        <h1>{{ event.title }}</h1>
+        <div class="event-details">
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <p><strong>Date & Time:</strong> {{ event.date_time }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
+            <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+            <p><strong>Created Date:</strong> {{ event.created_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,47 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
-from rest_framework.routers import DefaultRouter
-from events.views import EventViewSet, UserViewSet
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
-router = DefaultRouter()
-router.register(r'events', EventViewSet)
-router.register(r'users', UserViewSet)
-
-# Define a simple view for the root URL 
-
-def home(request):
-    html_content = """
-    <html>
-    <body>
-        <h1>Welcome to the Event Management API</h1>
-        <ul>
-            <li><a href="/admin/">Admin</a></li>
-            <li><a href="/api/events/">Event List</a></li>
-            <li><a href="/api/users/">User List</a></li>
-            <li><a href="/api/token/">Login</a></li>
-            <li><a href="/api/token/refresh/">Refresh Token</a></li>
-        </ul>
-    </body>
-    </html>
-    """
-    return HttpResponse(html_content)
-
-
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+from events.views import profile, logout_view, home, event_list, event_detail, register, upcoming_events, custom_login_view, create_event, update_event, delete_event
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('api/', include('events.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('', home), # Root URL
+    path('profile/', profile, name='profile'),
+    path('register/', register, name='user-register'),
+    path('events/', event_list, name='event-list'),
+    path('events/<int:event_id>/', event_detail, name='event-detail'),
+    path('upcoming-events/', upcoming_events, name='upcoming-events'),
+    path('login/', custom_login_view, name='login'),
+    path('', home, name='home'),
+    path('create-event/', create_event, name='create-event'),
+    path('update-event/<int:pk>/', update_event, name='event-update'), # URL for updating events 
+    path('delete-event/<int:pk>/', delete_event, name='event-delete'), # URL for deleting events
+    path('logout/', logout_view, name='logout'), # Add the logout path
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
