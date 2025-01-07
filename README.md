@@ -33,10 +33,9 @@ This API is designed to manage events, allowing users to create, update, and del
 - Django REST Framework: For creating the API.
 - MySQL: As the database.
 - mysqlclient: To connect Django with MySQL.
-- Gunicorn: For serving the Django application on Heroku.
 - PythonAnywhere For deployment.
 - Django ORM: For database interactions.
-- 
+- Copilot: Assist generate html templates
 
 ## Setup Instructions
 
