@@ -22,6 +22,25 @@
             text-align: center;
             color: #333;
         }
+        .filter-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .filter-form input,
+        .filter-form button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+        .filter-form button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
         .event-list {
             list-style-type: none;
             padding: 0;
@@ -62,11 +81,35 @@
         .pagination .active {
             font-weight: bold;
         }
+        .link-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .link-container a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <!-- Add Home Page Link -->
+    <div class="link-container">
+        <a href="{% url 'home' %}">Go to Homepage</a>
+    </div>
+
     <div class="events-container">
         <h1>Upcoming Events</h1>
+
+        <!-- Filter Form -->
+        <form class="filter-form" method="get">
+            <input type="text" name="title" placeholder="Search by Title">
+            <input type="text" name="location" placeholder="Search by Location">
+            <input type="date" name="start_date" placeholder="Start Date">
+            <input type="date" name="end_date" placeholder="End Date">
+            <button type="submit">Filter</button>
+        </form>
+
         <ul class="event-list">
             {% for event in events %}
                 <li>

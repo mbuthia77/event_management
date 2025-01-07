@@ -18,14 +18,15 @@ from django.urls import path, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from events.views import profile, logout_view, home, event_list, event_detail, register, upcoming_events, custom_login_view, create_event, update_event, delete_event
+from events.views import profile, logout_view, home, event_list, event_detail, upcoming_events, custom_login_view, create_event, update_event, delete_event, user_register_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('events.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('profile/', profile, name='profile'),
-    path('register/', register, name='user-register'),
+    #path('register/', register, name='user-register'),
+    path('register/', user_register_view, name='user_register'),
     path('events/', event_list, name='event-list'),
     path('events/<int:event_id>/', event_detail, name='event-detail'),
     path('upcoming-events/', upcoming_events, name='upcoming-events'),

@@ -1,71 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>User Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #f0f2f5;
+            padding: 20px;
         }
         .container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        h2 {
             text-align: center;
             color: #333;
         }
         form {
             display: flex;
             flex-direction: column;
+            gap: 10px;
         }
         label {
-            margin-bottom: 5px;
-            font-weight: bold;
             color: #555;
         }
         input {
-            margin-bottom: 15px;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 16px;
         }
         button {
             padding: 10px;
-            background-color: #007bff;
-            color: #fff;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 4px;
-            font-size: 16px;
             cursor: pointer;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #45a049;
+        }
+        .error-message, .form-errors {
+            color: red;
+            font-size: 0.9em;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Create a New Account</h1>
-        <form method="post" action="{% url 'user-register' %}">
+        <h2>Register</h2>
+        {% if errors %}
+            <div class="form-errors">
+                <ul>
+                    {% for field, error_messages in errors.items %}
+                        {% for error in error_messages %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        <form method="post" action="{% url 'user_register' %}">
             {% csrf_token %}
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
+            
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
+            
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+            
             <button type="submit">Register</button>
         </form>
     </div>
 </body>
 </html>
+

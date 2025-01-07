@@ -1,9 +1,8 @@
 import logging
 from rest_framework import viewsets, filters, serializers
 from rest_framework.response import Response
-from rest_framework.decorators import action
-from .models import Event, User, Category
-from .models import CustomUser as User
+from rest_framework.decorators import api_view, permission_classes, action
+from .models import Event, User, Category, CustomUser as User, CustomUser
 from .serializers import EventSerializer, UserSerializer, CategorySerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.utils import timezone
@@ -11,24 +10,18 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
 from django.views.decorators.csrf import csrf_protect
-
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
-
 from django.contrib.auth import get_user_model, logout, authenticate, login
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
 from django.http import HttpResponseRedirect
-
 from .forms import UserEditForm
-from .models import CustomUser as User
 from rest_framework.pagination import PageNumberPagination
 from django.core.paginator import Paginator
 from django.contrib.auth.signals import user_logged_in
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
-import pytz
 
 logger = logging.getLogger(__name__)
 
@@ -177,12 +170,6 @@ def event_detail(request, event_id):
     event = Event.objects.get(pk=event_id)
     return render(request, 'events/event_detail.html', {'event': event})
 
-def register(request):
-    if request.method == 'POST':
-        # Handle registration logic
-        pass
-    return render(request, 'events/register.html')
-
 def edit_profile(request):
     user = request.user
     if request.method == 'POST':
@@ -220,23 +207,6 @@ def custom_login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')  # Redirect to homepage or any other page after logout
-
-class UserCreateView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        user.is_new_user = False
-        user.save()
-
-        # Ensure the user is logged out after registration
-        logout(request)
-        
-        # Redirect to the login page
-        return HttpResponseRedirect('/login/')
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -315,3 +285,25 @@ class EventViewSet(viewsets.ModelViewSet):
 
 class EventManagementView(APIView):
     permission_classes = [IsAuthenticated]
+
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny])
+def user_register_view(request):
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.POST)
+        if serializer.is_valid():
+            user_data = serializer.validated_data
+            user = CustomUser.objects.create_user(
+                username=user_data['username'],
+                email=user_data['email'],
+                password=user_data['password']
+            )
+            # Authenticate and log in the user
+            authenticated_user = authenticate(username=user_data['username'], password=user_data['password'])
+            if authenticated_user is not None:
+                login(request, authenticated_user)
+                return redirect('home')
+            else:
+                return render(request, 'events/register.html', {'error': 'Authentication failed.'})
+        return render(request, 'events/register.html', {'errors': serializer.errors})
+    return render(request, 'events/register.html')

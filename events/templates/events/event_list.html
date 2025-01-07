@@ -24,7 +24,7 @@
             border-radius: 8px;
             margin-bottom: 10px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .event-list li strong {
             font-size: 1.2em;
@@ -37,9 +37,23 @@
         .event-details p {
             margin: 4px 0;
         }
+        .link-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .link-container a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <!-- Add Home Page Link -->
+    <div class="link-container">
+        <a href="{% url 'home' %}">Go to Homepage</a>
+    </div>
+
     <h1>Event List</h1>
     <p>This is a unique identifier to confirm the correct template is being loaded.</p>
     <ul class="event-list">

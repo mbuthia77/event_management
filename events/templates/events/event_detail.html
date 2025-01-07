@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +30,15 @@
             margin: 10px 0;
             color: #555;
         }
+        .link-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .link-container a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +51,11 @@
             <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
             <p><strong>Capacity:</strong> {{ event.capacity }}</p>
             <p><strong>Created Date:</strong> {{ event.created_date }}</p>
+        </div>
+
+        <!-- Add Home Page Link -->
+        <div class="link-container">
+            <a href="{% url 'home' %}">Go to Homepage</a>
         </div>
     </div>
 </body>
